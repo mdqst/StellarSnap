@@ -112,8 +112,6 @@ export async function lookupAddress(address:string):Promise<fedResponse>{
             return {'error':"not found", 'stellar_address':null, 'account_id':null}
         }
         const output = await res.json();
-        console.log("output text is:");
-        console.log(output);
         return output;
     }
     catch(e){

@@ -46,8 +46,6 @@ export class Screens{
             text("Enter a name for account:"),
             copyable(address),
         ]);
-        console.log("disp is");
-        console.log(disp);
         return await Utils.displayPanel(disp, "prompt")
     }
 

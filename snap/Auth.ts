@@ -30,8 +30,6 @@ export class Auth{
         const safty = Buffer.from("__challenge__").toString('hex');
         //this is done so an evil server couldn't use this function to sign a valid transaction
         const prepaired = Buffer.from(safty+dataHex, 'hex');
-        console.log("prepaired is");
-        console.log(prepaired);
         return prepaired;
     }
     async signData(data: string):Promise<string>{
@@ -56,13 +54,6 @@ export class Auth{
         const pk = this.keypair.rawPublicKey().toString('hex');
         const addr = this.keypair.publicKey();
         const proof = await this.signData(testKey);
-        console.log("auth object -----------------------------")
-        console.log('pk')
-        console.log(pk);
-        console.log('addr');
-        console.log(addr);
-        console.log('proof');
-        console.log(proof);
         return {
             pk,
             addr,
@@ -89,11 +80,7 @@ export class Auth{
         const auth = await this.getAuthObject(testKey);
         console.log("sign on post");
         jsonData.auth = auth;
-        console.log("auth is");
-        console.log(jsonData.auth);
         const outAuth = JSON.stringify(jsonData);
-        console.log("out auth is");
-        console.log(outAuth)
         const response = await fetch(url, 
             {   
                 method:'POST',
@@ -103,11 +90,9 @@ export class Auth{
                 body: outAuth
             }
         )
-        console.log(response);
 
         const output = await response.json();
-        console.log("json output is");
-        console.log(output);
+
         return output;
     }
 }

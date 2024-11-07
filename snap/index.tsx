@@ -222,7 +222,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
        * 
        */
       let dataPacket = await getDataPacket(wallet, client);
-      console.log(operations);
+      
       
       let interfaceId = await sendXLM(dataPacket, wallet, operations, testnet);
       let result = await Utils.openDialog(interfaceId);
@@ -246,10 +246,7 @@ export const onHomePage: OnHomePageHandler = async () => {
 
 export const onUserInput: OnUserInputHandler = async ({id, event}) => { 
  
-  console.log(id);
-  console.log(event);
-  console.log("interacton table is: ");
-  console.log(InteractionHandler.interactionTable);
+
   if(event.name){
 
 

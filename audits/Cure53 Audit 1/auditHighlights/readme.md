@@ -1,6 +1,6 @@
 # Audit Highlights
 This are commits that are primarly comments walking through code changes found in audits.
-Differences are stored in highlights.txt. These are labeled according to the issues they resolve.
+Differences are stored in /auditHighlights These are labeled according to the issues they resolve. They follow a consecutive hash scemea where the difference is based of hash of the previous highlight starting at commit 49d7915666cdc2cd45a7cf8216142a51d1460534.
 
 ## Goals
 to show interaction pathways and highlight which code resolves which of the following issues
@@ -19,7 +19,7 @@ highlight hash - 98a91fb2565b73b27f9d382acbfdc99a3c81a66b
 highlight hash - 484019c6c966687b93ec610d113bf6cbfc09b692
 
 ### KYR-01-006 - clearState default wallet alteration without confirmation
-highlight hash - 
+highlight hash - f31e0ade5fba9e2f15fa938ecbbbd37279f00953
 
 ---
 

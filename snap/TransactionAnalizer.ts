@@ -64,7 +64,6 @@ async function getAddressInfo(addresses:string[]){
     }
     const response = await fetch(url+query);
     const output = await response.json();
-    console.log(output);
     return output._embedded.records;
 }
 

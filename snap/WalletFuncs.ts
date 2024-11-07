@@ -99,9 +99,6 @@ export class WalletFuncs{
             throw new Error("user rejected request");
         }
         txn.sign(this.keyPair);
-        console.log(txn);
-        console.log("xdr is: ");
-        console.log(txn.toEnvelope().toXDR());
         return txn;
     }
 
@@ -109,11 +106,10 @@ export class WalletFuncs{
         if(confirmation === undefined){
             confirmation = true;
         }
-        console.log("inHere")
+        
         const signedTxn = await this.signArbitaryTxn(xdrTransaction, confirmation);
-        console.log("next");
         const response = await this.client.submitTransaction(signedTxn);
-        console.log("response got");
+        console.log("submited transaction response is");
         console.log(response);
         if(response.successful){
             await Utils.notify("Transaction Successful")

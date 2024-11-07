@@ -28,14 +28,12 @@ export class Wallet{
             //this.keyPair = nacl.sign.keyPair.fromSeed(seed);
             console.log("seeding");
             const seed = account.seed;
-            console.log(seed);
             let bufferSeed = new Uint8Array(32);
             for(let i = 0; i<32; i++){
                 bufferSeed[i] = seed[i];
             }
             console.log("about to make keyPair");
             this.keyPair = Keypair.fromRawEd25519Seed(bufferSeed as Buffer);
-            console.log(this.keyPair);
             //this.address = StrKey.encodeEd25519PublicKey(this.keyPair.publicKey.buffer);
             this.address = this.keyPair.publicKey();
             //this.publicKey = this.keyPair.publicKey
@@ -101,7 +99,7 @@ export class Wallet{
         else{
             salt = "salt "+String(numAccounts+1)
         }
-        console.log("salt is: "+salt);
+        
         let tempAccount = await Wallet.getTempAccountFromSalt(salt);
         tempAccount.name = name;
 
@@ -143,11 +141,10 @@ export class Wallet{
             setState = true;
         }
         let currentState = await StateManager.getState();
-        console.log("got current state");
-        console.log(currentState);
+        
         let walletAccount:walletAccount;
         if(currentState.currentAccount === null){
-            console.log("current State is null");
+            
             
             let success = await Wallet.createNewAccount('Account 1', currentState, setState);
             if(!success){
@@ -208,8 +205,7 @@ export class Wallet{
         const seed = await this.getSeedFromSalt(salt);
         let keyPair = Keypair.fromRawEd25519Seed(seed as Buffer);
         //this.address = StrKey.encodeEd25519PublicKey(this.keyPair.publicKey.buffer);
-        console.log("seed is");
-        console.log(seed);
+        
         const address = keyPair.publicKey();
         const account:walletAccount = {
             address:address,
@@ -273,20 +269,18 @@ export class Wallet{
         if(currentState === undefined){
             console.log("currentState is undefined")
             currentState = await StateManager.getState();
-            console.log(currentState);
+            
         }
-        console.log(currentState.accounts);
+        
         let output:Array<{"name":string, "address":string}> = []
-        console.log(currentState.accounts);
+        
         for(let account of Object.values(currentState.accounts)){
-            console.log(account);
+            
             output.push({
                 name:account.name,
                 address:account.address
             })
         }
-        console.log("output is");
-        console.log(output);
         return output;
     }
       
