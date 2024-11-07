@@ -18,7 +18,8 @@ type interfaceId = string;
 
 
 
-
+//highlighted as KYR-01-004   (dApp origin not displayed in Snap UI) fix
+//No need to display the origin in this function as it is not a user input function
 export async function showQrCode(wallet:Wallet):Promise<interfaceId>{
 
     const qrcode = new QRcode(wallet.address);

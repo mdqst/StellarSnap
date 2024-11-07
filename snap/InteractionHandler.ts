@@ -13,7 +13,7 @@ interface InteractionTable{
 type InterfaceId = string;
 export class InteractionHandler{
     static interactionTable:InteractionTable = {};
-    static requestOrigin:string = "snap";
+    static requestOrigin:string = "snap"; //default origin (KYR-01-004) Gloabl Dapp call origin defaults to snap if call origin is internal
 
     static setRequestOrigin(origin:string){
         InteractionHandler.requestOrigin = origin;

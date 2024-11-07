@@ -6,6 +6,8 @@ import { SimpleAccount } from "types";
 
 export async function switchAccountDialog(address:string): Promise<boolean>{
     let account = await Wallet.getAccount(address) as SimpleAccount
+    //highlighted as KYR-01-004   (dApp origin not displayed in Snap UI) fix
+    //the request origin is displayed and accessed through the InteractionHandler object
     let ui = (
         <Box>
             <Heading>Switch Accounts</Heading>

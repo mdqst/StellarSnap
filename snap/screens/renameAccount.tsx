@@ -8,6 +8,8 @@ export async function renameAccountDialog(address:string): Promise<boolean>{
     //highlighted as KYR-01-002 (Markdown and control characters) fix
     //can only display accounts stored in the state object, which is off limits to a potential attacker
     
+    //highlighted as KYR-01-004   (dApp origin not displayed in Snap UI) fix
+    //the request origin is displayed and accessed through the InteractionHandler object
     let ui = (
         <Box>
             <Heading>Rename Account</Heading>

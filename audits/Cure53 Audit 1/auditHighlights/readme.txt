@@ -11,8 +11,11 @@ Markdown & control characters allowed in dialogs
 KYR-01-002 - f34f84253a9374f7d77fbb4dc7a609eaf791c30a
 
 Accounts renamable without confirmation 
-KYR-01-003 - 
+KYR-01-003 - 98a91fb2565b73b27f9d382acbfdc99a3c81a66b
+
+dApp origin not displayed in Snap UI
 KYR-01-004
+
 KYR-01-006
 
 Issues KYR-01-001 & KYR-01-005

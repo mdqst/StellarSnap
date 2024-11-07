@@ -8,6 +8,17 @@
  * code cannot be executed without being called from one of these functions
  * 
  */
+
+/*
+  *Notes for KYR-01-004 (dApp origin not displayed in Snap UI)
+  * The Origin is now stored in the InteractionHandler class, and is displayed in the UI when a user is prompted to sign a message
+  * this is done because static class memebers have global scope and can be accessed from anywhere in the code
+  * The interaction handler class has other uses as it helps to define button on:click interactions useing the new metamask snap-ui
+  * This is bound to change as the snap-ui is still in development
+  * 
+  * primary mechanism for remediation is dialog replacement into the new tsx format. and where this is not possible or unnecessary,
+  * the displayPanel function from the Utils class is used to display the origin
+*/
 import type { OnInstallHandler, OnUserInputHandler,  OnRpcRequestHandler, OnHomePageHandler} from '@metamask/snaps-sdk';
 
 import { Wallet, ImportAccountUI, showQrCode} from './Wallet';

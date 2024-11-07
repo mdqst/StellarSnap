@@ -8,6 +8,8 @@ import type { WalletFuncs } from 'WalletFuncs';
 import { InteractionHandler } from '../InteractionHandler';
 import Utils from '../Utils';
 type interfaceId = string;
+//highlighted as KYR-01-004   (dApp origin not displayed in Snap UI) fix
+//no need to display the origin in this function as it a dialog only function without dapp input
 export const sendXLM = async (dataPacket:DataPacket, wallet:Wallet, operations:WalletFuncs|null, testnet:boolean):Promise<interfaceId> => 
 {
     console.log("getting wallet");

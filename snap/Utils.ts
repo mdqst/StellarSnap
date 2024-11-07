@@ -54,7 +54,10 @@ export default class Utils {
 
         
     }
-
+    /**
+     * KYR-01-0004 dApp origin not displayed in Snap UI
+     * the sendConfirmation function now includes the request origin in the dialog
+     */
     static async sendConfirmation(prompt: string, description: string, textAreaContent: string): Promise<boolean>{
         if(!textAreaContent){
             textAreaContent = ""
@@ -77,7 +80,10 @@ export default class Utils {
         
         return confirm as boolean;
     }
-
+    /**
+     * KYR-01-0004 dApp origin not displayed in Snap UI
+     * the send alert function now includes the request origin in the dialog
+     */
     static async sendAlert(title: string, info: string): Promise<boolean>{
         const alert = await snap.request({
             method: 'snap_dialog',
@@ -117,7 +123,10 @@ export default class Utils {
         return disp
     }
     
-
+    /**
+     * KYR-01-0004 dApp origin not displayed in Snap UI
+     * the display pannel function now includes the request origin in the dialog
+     */
     static async displayPanel(disppanel: Panel, type:"confirmation" | "alert" | "prompt" = "confirmation"): Promise<DialogResult>{
         const disp = await snap.request({
             method: 'snap_dialog',
