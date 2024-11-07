@@ -38,7 +38,7 @@ export class Auth{
         let displayPanel = panel([
             heading('Sign Text?'),
             divider(),
-            copyable(data),
+            copyable(data), //KYR-01-002 resolved here, markdown characters will not show up in the copyable component
             divider(),
             text('request from: '+InteractionHandler.requestOrigin)
         ])

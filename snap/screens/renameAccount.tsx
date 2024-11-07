@@ -4,7 +4,9 @@ import Utils from '../Utils';
 import {Wallet} from '../Wallet';
 import { SimpleAccount } from 'types';
 export async function renameAccountDialog(address:string): Promise<boolean>{
-    let account = (await Wallet.getAccount(address)) as SimpleAccount
+    let account = (await Wallet.getAccount(address)) as SimpleAccount 
+    //highlighted as KYR-01-002 (Markdown and control characters) fix
+    //can only display accounts stored in the state object, which is off limits to a potential attacker
     
     let ui = (
         <Box>

@@ -1,4 +1,13 @@
 //import { OnRpcRequestHandler } from '@metamask/snap-types';
+
+
+
+/**
+ * This file defines all entry points for the snap.
+ * this includes the onInstall, onRpcRequest, onUserInput, onCronJob and onHomePage functions
+ * code cannot be executed without being called from one of these functions
+ * 
+ */
 import type { OnInstallHandler, OnUserInputHandler,  OnRpcRequestHandler, OnHomePageHandler} from '@metamask/snaps-sdk';
 
 import { Wallet, ImportAccountUI, showQrCode} from './Wallet';
@@ -105,14 +114,17 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
     case 'getDataPacket':
       return await getDataPacket(wallet, client);
     case 'setCurrentAccount':
+      //highlighted as entry point 1 for KYR-01-002 (Markdown and control characters) fix
       return await Wallet.setCurrentWallet(params.address, wallet.currentState);
     case 'showAddress':
       return await showQrCode(wallet);
     case 'createAccount':
+      //highlighted as entry point 2 for KYR-01-002 (Markdown and control characters) fix
       return await Wallet.CreateNewAccountDialog(params.name); //returns simpleAccount object {name:string, address:string} also sets the current account to the created account
     case 'listAccounts':
       return await Wallet.listAccounts();
     case 'renameAccount':
+      //highlighted as entry point 3 for KYR-01-002 (Markdown and control characters) fix
       return await renameAccountDialog(params.address);
     case 'importAccount':
       await ImportAccountUI(wallet.currentState);
@@ -138,6 +150,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
       const auth_client = new Auth(wallet.keyPair);
       return await auth_client.signOnPost(params.url, params.data, params.challenge)
     case 'signStr':
+      //highlighted as entry point 4 for KYR-01-002 (Markdown and control characters) fix
       const auth = new Auth(wallet.keyPair);
       return await auth.signData(params.challenge);
     case 'dispPrivateKey':
@@ -156,14 +169,6 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
       }
       if(operations !== null){
         return await operations.transfer(params.to, params.amount);
-      }
-    case 'sendAsset':
-      if(!wallet_funded){
-        await Screens.RequiresFundedWallet(request.method, wallet.address);
-        throw new Error('Method Requires Account to be funded');
-      }
-      if(operations !== null){
-        return await operations.transferAsset(params.to, params.amount, params.asset);
       }
 
     case 'signTransaction':
@@ -191,6 +196,8 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
     case 'openSendXLM':
       /**
        * Mainly a test for future expansion shouldn't be used often, not really insured to work, but it should be safe
+       * 
+       * 
        */
       let dataPacket = await getDataPacket(wallet, client);
       console.log(operations);
