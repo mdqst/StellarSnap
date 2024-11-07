@@ -178,6 +178,10 @@ export class Screens{
         return (await Utils.displayPanel(disp, 'confirmation')) as boolean;
     }
 
+    //KYR-01-006 (State clearing confirmation)
+    //This is done using a confirmation dialog
+    //The display panel function injects the dapp origin into the dialog
+    //This prevents a malicious dapp from tricking the user into clearing state
     static async clearStateConfirmation():Promise<boolean>{
         const disp = panel([
             heading("Would you like to clear all state?"),

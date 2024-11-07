@@ -59,9 +59,13 @@ export const onInstall: OnInstallHandler = async () => {
 };
 
 export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => {
+  //highlighted as KYR-01-004   (dApp origin not displayed in Snap UI) fix
   InteractionHandler.setRequestOrigin(origin);
+  //This promotes the origin variable to a global scope, and can be accessed from dialog generators
+
   if(request.method === "clearState"){
     console.log("clearing state");
+    //KYR-01-006 (State clearing confirmation) fixed by confimation dialog
     let confirm = await Screens.clearStateConfirmation();
     if(confirm){
       await StateManager.clearState();
