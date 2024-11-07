@@ -5,6 +5,8 @@ export async function CreateNewAccountConfimation(name:string): Promise<boolean>
     //highlighted as entry point 1 for KYR-01-002 (Markdown and control characters) fix
     //account name is stored in a copyable component, which does not support markdown or control characters
     
+    //highlighted as KYR-01-004   (dApp origin not displayed in Snap UI) fix
+    //the request origin is displayed in the copyable component, which is a snap-ui component
     
     const ui = (
         <Box>
