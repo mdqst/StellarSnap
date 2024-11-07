@@ -21,6 +21,13 @@ export async function renameAccountDialog(address:string): Promise<boolean>{
             
         </Box>
     )
+
+    /**
+     * 
+     * KYR-01-003 (Accounts renamable without confirmation ) notes
+     * this creates a prompt confirmation dialog for renaming an account
+     * a user must then type their desired account name into the dialog
+     */
     let newName = await Utils.openDialogWithContent(ui, "prompt");
     if(newName === null){
         Utils.throwError(400,"User Rejected Request");

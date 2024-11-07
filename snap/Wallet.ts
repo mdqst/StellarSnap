@@ -67,6 +67,8 @@ export class Wallet{
         if(switchAccount === undefined){
             switchAccount = true;
         }
+        //user confirmation dialog dialog KYR-01-003 (Accounts renamable without confirmation ) fix
+        //this is found in file snap/screens/newAccount.tsx
         const confirm = await CreateNewAccountConfimation(name);
         let output = null;
         

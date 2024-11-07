@@ -125,6 +125,13 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
       return await Wallet.listAccounts();
     case 'renameAccount':
       //highlighted as entry point 3 for KYR-01-002 (Markdown and control characters) fix
+      //highlighted as entry point 1 for KYR-01-003 (Accounts renamable without confirmation )
+      /**
+       * KYR-01-003 (Accounts renamable without confirmation ) notes
+       * updated version uses new tsx file that requires user to confirm the change
+       * dapps no longer get to set the name of the account, the user does
+       * dapps can create new accounts, with a given name but they must use the createAccount method
+       */
       return await renameAccountDialog(params.address);
     case 'importAccount':
       await ImportAccountUI(wallet.currentState);
