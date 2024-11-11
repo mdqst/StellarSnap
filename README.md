@@ -1,7 +1,12 @@
 
-# Stellar Wallet Integration with MetaMask Snaps
+# Stellar Snap
 
 This guide provides detailed instructions on integrating Stellar wallet functionalities into MetaMask Snaps, enabling seamless interaction with Stellar applications. This integration aims to create a universal standard for integrating Stellar wallet functionalities across different applications.
+
+---
+## full documentation
+
+[full documentation](https://stellar-snap-paulfears-projects.vercel.app/docs)
 
 ## Table of Contents
 - [Quick Start](#quick-start)
@@ -116,9 +121,23 @@ console.log(`Current Address: ${address}`);
 #### 🌐 Specify a Network
 
 Set the network environment for transactions, ensuring users connect to the appropriate Stellar network (Mainnet or Testnet).
+this can be done by passing a boolean into the testnet parameter to any call. This is optional, and method calls will be treated
+as mainnet if this parameter is omited. If the testnet parameter is not relevant to a method call it is simply ignored
 
 ```javascript
-await callMetaStellar('setNetwork', { network: 'testnet' });
+const balance = await ethereum.request({
+  method: 'wallet_invokeSnap',
+  params: {
+    snapId: `npm:stellar-snap`,
+    request: {
+      method: 'getBalance',
+      params: {
+        testnet: false // optional; true for testnet
+      }
+    }
+  }
+});
+
 ```
 
 #### 🔏 Easily Signing a Transaction
@@ -126,7 +145,7 @@ await callMetaStellar('setNetwork', { network: 'testnet' });
 Enable users to securely sign transactions to ensure authorized actions.
 
 ```javascript
-const signedTransaction = await callMetaStellar('signTransaction', { xdr });
+const signedTransaction = await callMetaStellar('signTransaction', { transaction:xdr });
 console.log(`Signed Transaction: ${signedTransaction}`);
 ```
 
@@ -137,13 +156,44 @@ console.log(`Signed Transaction: ${signedTransaction}`);
 The easiest way to interact with the wallet is by copying the `callMetaStellar` function. This function acts as a bridge to make calls to the Stellar RPC methods defined in your Snap.
 
 ```javascript
-async function callMetaStellar(method, params) {
-  const provider = window.ethereum; // Access the MetaMask provider
-  return await provider.request({
-    method: `metastellar_${method}`,
-    params: [params],
-  });
+
+
+async function callMetaStellar(method, params){
+    if (typeof window !== 'undefined' && typeof window.ethereum !== undefined) {
+        //You Can Delete this section after offical launch
+        const isFlask = ( 
+        await window.ethereum?.request({ method: "web3_clientVersion" })
+        )?.includes("flask"); 
+        if(!isFlask){
+        alert("install Metamask Flask")
+        }
+        // ------------------------------------------------
+        try{
+            if(method === 'connect'){
+            //This will also install stellar if the user has metamask
+                return await window.ethereum.request({
+                method: 'wallet_requestSnaps',
+                params: {
+                    ['npm:stellar-snap']: {}
+                },
+                });
+            }
+            const rpcPacket = {
+                method: 'wallet_invokeSnap',
+                params:{
+                    snapId:'npm:stellar-snap',
+                    request: {'method':method, params:params}
+                }
+            }
+            return await window.ethereum.request(rpcPacket);
+        }
+        catch(e){
+            alert(e.message);
+        }
+    }
 }
+
+    
 ```
 
 **Invoke the `callMetaStellar` function:**
@@ -179,7 +229,7 @@ Here’s a comprehensive list of Stellar methods available for invocation via th
    - **Implementation**:
    ```javascript
    async function getAccountInfo(accountId) {
-       return await callMetaStellar('getAccountInfo', { accountId });
+       return await callMetaStellar('getAccountInfo', { address:accountId });
    }
    ```
 
@@ -188,25 +238,27 @@ Here’s a comprehensive list of Stellar methods available for invocation via th
    - **Implementation**:
    ```javascript
    async function getBalance(accountId) {
-       return await callMetaStellar('getBalance', { accountId });
+       return await callMetaStellar('getBalance', {testnet:true});
    }
    ```
 
 4. **transfer**
-   - **Description**: Initiate a transfer to another account.
+   - **Description**: Initiate an XLM transfer to another account.
    - **Implementation**:
    ```javascript
-   async function transfer(destination, amount, assetCode) {
-       return await callMetaStellar('transfer', { destination, amount, assetCode });
+   async function transfer(destination, amount) {
+        gAddress = destination //stellar address
+        xlmAmount = amount //decimal amount of xlm as a string ex. '2.146'
+        return await callMetaStellar('transfer', {to:`${gAddress}`, amount:`${xlmAmount}`, testnet?:true});
    }
    ```
 
 5. **fund**
-   - **Description**: Fund an account with Stellar Lumens (XLM).
+   - **Description**: Fund a testnet account with Stellar Lumens (XLM).
    - **Implementation**:
    ```javascript
    async function fund(accountId, amount) {
-       return await callMetaStellar('fund', { accountId, amount });
+       return await callMetaStellar('fund');
    }
    ```
 
@@ -215,7 +267,7 @@ Here’s a comprehensive list of Stellar methods available for invocation via th
    - **Implementation**:
    ```javascript
    async function signTransaction(xdr) {
-       return await callMetaStellar('signTransaction', { xdr });
+       return await callMetaStellar('signTransaction', { transaction:`${xdr} as a string` });
    }
    ```
 
@@ -224,7 +276,7 @@ Here’s a comprehensive list of Stellar methods available for invocation via th
    - **Implementation**:
    ```javascript
    async function signAndSubmitTransaction(xdr) {
-       return await callMetaStellar('signAndSubmitTransaction', { xdr });
+       return await callMetaStellar('signAndSubmitTransaction', { transaction:`${xdr} as a string` });
    }
    ```
 
@@ -242,12 +294,12 @@ Here’s a comprehensive list of Stellar methods available for invocation via th
    - **Implementation**:
    ```javascript
    async function setCurrentAccount(accountId) {
-       return await callMetaStellar('setCurrentAccount', { accountId });
+       return await callMetaStellar('setCurrentAccount', { address:'G-address' });
    }
    ```
 
 10. **showAddress**
-    - **Description**: Display the current Stellar address to the user.
+    - **Description**: Display the current Stellar address to the user. Including QR code
     - **Implementation**:
     ```javascript
     async function showAddress() {
@@ -260,7 +312,7 @@ Here’s a comprehensive list of Stellar methods available for invocation via th
     - **Implementation**:
     ```javascript
     async function createAccount() {
-        return await callMetaStellar('createAccount');
+        return await callMetaStellar('createAccount', {name:'accountname-string'});
     }
     ```
 
@@ -274,11 +326,11 @@ Here’s a comprehensive list of Stellar methods available for invocation via th
     ```
 
 13. **renameAccount**
-    - **Description**: Rename an existing account.
+    - **Description**: Rename an existing account. This is done by the user using a pop-up
     - **Implementation**:
     ```javascript
-    async function renameAccount(accountId, newName) {
-        return await callMetaStellar('renameAccount', { accountId, newName });
+    async function renameAccount(address) {
+        return await callMetaStellar('renameAccount', {address:`${address}`});
     }
     ```
 
@@ -287,7 +339,7 @@ Here’s a comprehensive list of Stellar methods available for invocation via th
     - **Implementation**:
     ```javascript
     async function importAccount(secretKey) {
-        return await callMetaStellar('importAccount', { secretKey });
+        return await callMetaStellar('importAccount');
     }
     ```
 
@@ -327,23 +379,7 @@ Here’s a comprehensive list of Stellar methods available for invocation via th
     }
     ```
 
-19. **sendAsset**
-    - **Description**: Send a specific asset to another account.
-    - **Implementation**:
-    ```javascript
-    async function sendAsset(destination, amount, assetCode) {
-        return await callMetaStellar('sendAsset', { destination, amount, assetCode });
-    }
-    ```
 
-20. **createFederationAccount**
-    - **Description**: Create a new federation account for easier asset management.
-    - **Implementation**:
-    ```javascript
-    async function createFederationAccount(name) {
-        return await callMetaStellar('createFederationAccount', { name });
-    }
-    ```
 
 These functions form the core of your Stellar wallet integration within MetaMask Snaps. By utilizing these methods, you enable smooth interaction with Stellar features, fostering a cohesive user experience across applications.
 
